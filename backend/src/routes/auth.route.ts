@@ -1,20 +1,15 @@
 import express from 'express';
-import {
-  getMe,
-  login,
-  logout,
-  signup,
-} from '../controllers/auth.controller.ts';
+import { authController } from '../controllers/auth.controller.ts';
 import protectRoute from '../middleware/protectRoute.ts';
 
 const router = express.Router();
 
-router.get('/me', protectRoute, getMe);
+router.get('/me', protectRoute, authController.getMe);
 
-router.post('/login', login);
+router.post('/login', authController.login);
 
-router.post('/logout', logout);
+router.post('/logout', authController.logout);
 
-router.post('/signup', signup);
+router.post('/signup', authController.signup);
 
 export default router;
