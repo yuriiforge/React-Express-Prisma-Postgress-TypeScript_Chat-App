@@ -1,6 +1,6 @@
 import bcrypt from 'bcryptjs';
 
-class HashService {
+export class HashService {
   private readonly saltRounds: number;
 
   constructor() {

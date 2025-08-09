@@ -1,10 +1,10 @@
 import { Request, Response } from 'express';
 import prisma from '../db/prisma';
-import bcrypt from 'bcryptjs';
+import { HashService, hashService } from '../services/hash.service';
 import generateToken from '../utils/generateToken';
 
 class AuthController {
-  constructor() {}
+  constructor(private readonly hashService: HashService) {}
 
   public signup = async (req: Request, res: Response) => {
     try {
@@ -29,8 +29,7 @@ class AuthController {
         return res.status(400).json({ error: 'Username already exists' });
       }
 
-      const salt = await bcrypt.genSalt(10);
-      const hashedPassword = await bcrypt.hash(password, salt);
+      const hashedPassword = await this.hashService.hash(password);
 
       // https://i.pravatar.cc/300
       const avatar = `https://i.pravatar.cc/300?u=${username}`;
@@ -74,7 +73,10 @@ class AuthController {
         return res.status(404).json({ error: 'Invalid credentials' });
       }
 
-      const isPasswordCorrect = await bcrypt.compare(password, user.password);
+      const isPasswordCorrect = await this.hashService.compare(
+        password,
+        user.password
+      );
 
       if (!isPasswordCorrect) {
         return res.status(400).json({ error: 'Invalid credentials' });
@@ -125,4 +127,4 @@ class AuthController {
   };
 }
 
-export const authController = new AuthController();
+export const authController = new AuthController(hashService);
