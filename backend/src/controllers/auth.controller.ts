@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import prisma from '../db/prisma';
 import { HashService, hashService } from '../services/hash.service';
 import generateToken from '../utils/generateToken';
+import { User } from '../../generated/prisma';
 
 class AuthController {
   constructor(private readonly hashService: HashService) {}
@@ -24,7 +25,7 @@ class AuthController {
     }
 
     const hashedPassword = await this.hashService.hash(password);
-    const avatar = `https://i.pravatar.cc/300?u=${username}`;
+    const avatar = this.generateAvatar(username);
 
     const newUser = await prisma.user.create({
       data: {
@@ -39,12 +40,7 @@ class AuthController {
     // generate token in sec
     generateToken(newUser.id, res);
 
-    res.status(201).json({
-      id: newUser.id,
-      fullName: newUser.fullname,
-      username: newUser.username,
-      profilePic: newUser.profilePic,
-    });
+    res.status(201).json(this.serializeUser(newUser));
   };
 
   public login = async (req: Request, res: Response) => {
@@ -67,12 +63,7 @@ class AuthController {
 
     generateToken(user.id, res);
 
-    res.status(200).json({
-      id: user.id,
-      fullName: user.fullname,
-      username: user.username,
-      profilePic: user.profilePic,
-    });
+    res.status(200).json(this.serializeUser(user));
   };
 
   public logout = async (req: Request, res: Response) => {
@@ -89,13 +80,21 @@ class AuthController {
       throw error;
     }
 
-    res.status(200).json({
+    res.status(200).json(this.serializeUser(user));
+  };
+
+  private generateAvatar(username: string): string {
+    return `https://i.pravatar.cc/300?u=${username}`;
+  }
+
+  private serializeUser(user: User) {
+    return {
       id: user.id,
       fullName: user.fullname,
       username: user.username,
       profilePic: user.profilePic,
-    });
-  };
+    };
+  }
 }
 
 export const authController = new AuthController(hashService);
