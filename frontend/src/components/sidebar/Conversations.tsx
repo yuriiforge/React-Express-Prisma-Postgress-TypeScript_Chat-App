@@ -1,11 +1,12 @@
 import useGetConversations from '../../hooks/useGetConversations';
 import { getRandomEmoji } from '../../utils/emojis';
+import Spinner from '../Spinner';
 import Conversation from './Conversation';
 
 const Conversations = () => {
   const { loading, conversations } = useGetConversations();
 
-  if (loading) return <span className="loading loading-spinner mx-auto" />;
+  if (loading) return <Spinner />;
   return (
     <div className="py-2 flex flex-col overflow-auto">
       {conversations.map((conversation) => (
