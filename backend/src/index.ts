@@ -3,10 +3,10 @@ import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import authRoutes from './routes/auth.route.ts';
 import messageRoutes from './routes/message.route.ts';
+import { app, server } from './socket/socket.ts';
 import dotenv from 'dotenv';
 
 dotenv.config();
-const app = express();
 
 app.use(cookieParser());
 app.use(express.json());
@@ -27,7 +27,7 @@ app.get('/', (req: Request, res: Response) => {
 
 const port = process.env.PORT;
 
-app.listen(port, () => {
+server.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
 
