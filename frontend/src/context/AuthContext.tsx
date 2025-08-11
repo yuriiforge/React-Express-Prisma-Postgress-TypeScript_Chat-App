@@ -7,6 +7,7 @@ import {
   type PropsWithChildren,
   type SetStateAction,
 } from 'react';
+import { authService } from '../services/auth.service';
 
 type AuthUser = {
   id: string;
@@ -38,16 +39,16 @@ export const AuthContextProvider = ({ children }: PropsWithChildren) => {
     const fetchAuthUser = async () => {
       try {
         setIsLoading(true);
-        const res = await fetch('http://localhost:3000/api/auth/me', {
-          credentials: 'include',
-        });
-        const data = await res.json();
-
-        if (!res.ok) {
-          throw new Error(data.message);
+        const res = await authService.getMe<AuthUser>();
+        if (res.error) {
+          throw new Error(res.error);
         }
 
-        setAuthUser(data);
+        if (!res.data) {
+          throw new Error('No user data returned');
+        }
+
+        setAuthUser(res.data);
       } catch (error) {
         console.error(error);
       } finally {

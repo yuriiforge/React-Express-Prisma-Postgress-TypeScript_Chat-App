@@ -1,6 +1,15 @@
 import { useState } from 'react';
 import { useAuthContext } from '../context/AuthContext';
 import type { SignupData } from '../schemas/auth.schema';
+import { authService } from '../services/auth.service';
+
+type AuthUser = {
+  id: string;
+  fullName: string;
+  email: string;
+  profilePic: string;
+  gender: string;
+};
 
 const useSignup = () => {
   const [loading, setLoading] = useState(false);
@@ -9,17 +18,17 @@ const useSignup = () => {
   const signup = async (inputs: SignupData) => {
     try {
       setLoading(true);
-      const res = await fetch('http://localhost:3000/api/auth/signup', {
-        method: 'POST',
-        headers: {
-          'Content-type': 'application/json',
-        },
-        body: JSON.stringify(inputs),
-      });
-      const data = await res.json();
+      const response = await authService.signup<AuthUser>(inputs);
 
-      if (!res.ok) throw new Error(data.error);
-      setAuthUser(data);
+      if (response.error) {
+        throw new Error(response.error);
+      }
+
+      if (!response.data) {
+        throw new Error('No user data returned');
+      }
+
+      setAuthUser(response.data);
     } catch (error: any) {
       console.error(error.message);
     } finally {
