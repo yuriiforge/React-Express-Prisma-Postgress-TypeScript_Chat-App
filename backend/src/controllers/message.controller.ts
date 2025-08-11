@@ -52,6 +52,32 @@ class MessageController {
 
     res.status(200).json(newMessage);
   }
+
+  async getMessages(req: Request, res: Response) {
+    const { id: userToChatId } = req.params;
+    const senderId = req.user.id;
+
+    const conversation = await prisma.conversation.findFirst({
+      where: {
+        participantIds: {
+          hasEvery: [senderId, userToChatId],
+        },
+      },
+      include: {
+        messages: {
+          orderBy: {
+            createdAt: 'asc',
+          },
+        },
+      },
+    });
+
+    if (!conversation) {
+      return res.status(200).json([]);
+    }
+
+    res.status(200).json(conversation.messages);
+  }
 }
 
 export const messageController = new MessageController();

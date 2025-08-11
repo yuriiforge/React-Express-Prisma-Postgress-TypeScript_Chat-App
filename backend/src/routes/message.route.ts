@@ -10,5 +10,6 @@ router.post(
   protectRoute,
   asyncHandler(messageController.sendMessage)
 );
+router.get('/:id', protectRoute, asyncHandler(messageController.getMessages));
 
 export default router;
