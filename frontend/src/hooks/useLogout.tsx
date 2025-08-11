@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { useAuthContext } from '../context/auth.context';
 import { authService } from '../services/auth.service';
+import toast from 'react-hot-toast';
+import { getErrorMessage } from '../utils/getErrorMessage';
 
 const useLogout = () => {
   const [loading, setLoading] = useState(false);
@@ -17,13 +19,9 @@ const useLogout = () => {
 
       setAuthUser(null);
     } catch (error: unknown) {
-      let message = 'Network error';
+      const message = getErrorMessage(error);
 
-      if (error instanceof Error) {
-        message = error.message;
-      } else if (typeof error === 'string') {
-        message = error;
-      }
+      toast.error(message);
 
       return { status: 0, error: message };
     } finally {

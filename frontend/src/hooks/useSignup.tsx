@@ -2,6 +2,7 @@ import { useState } from 'react';
 import type { SignupData } from '../schemas/auth.schema';
 import { authService } from '../services/auth.service';
 import { useAuthContext } from '../context/auth.context';
+import toast from 'react-hot-toast';
 
 type AuthUser = {
   id: string;
@@ -37,6 +38,8 @@ const useSignup = () => {
       } else if (typeof error === 'string') {
         message = error;
       }
+
+      toast.error(message);
 
       return { status: 0, error: message };
     } finally {

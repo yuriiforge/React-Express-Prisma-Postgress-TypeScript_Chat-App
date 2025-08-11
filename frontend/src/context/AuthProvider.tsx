@@ -1,6 +1,8 @@
 import { useEffect, useState, type PropsWithChildren } from 'react';
 import { authService } from '../services/auth.service';
 import { AuthContext, type AuthUser } from './auth.context';
+import { getErrorMessage } from '../utils/getErrorMessage';
+import toast from 'react-hot-toast';
 
 export const AuthContextProvider = ({ children }: PropsWithChildren) => {
   const [authUser, setAuthUser] = useState<AuthUser | null>(null);
@@ -20,8 +22,12 @@ export const AuthContextProvider = ({ children }: PropsWithChildren) => {
         }
 
         setAuthUser(res.data);
-      } catch (error) {
-        console.error(error);
+      } catch (error: unknown) {
+        const message = getErrorMessage(error);
+
+        toast.error(message);
+
+        return { status: 0, error: message };
       } finally {
         setIsLoading(false);
       }
