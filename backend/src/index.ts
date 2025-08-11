@@ -30,6 +30,3 @@ const port = process.env.PORT;
 server.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
-
-// TODO Add socket.io to the server
-// TODO Configure this server for the deployment
