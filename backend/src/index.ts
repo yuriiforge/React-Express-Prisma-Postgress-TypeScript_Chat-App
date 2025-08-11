@@ -25,8 +25,10 @@ app.get('/', (req: Request, res: Response) => {
   res.send('Hello, world!');
 });
 
-app.listen(3000, () => {
-  console.log('Server is running on port 3000');
+const port = process.env.PORT;
+
+app.listen(port, () => {
+  console.log(`Server is running on port ${port}`);
 });
 
 // TODO Add socket.io to the server
