@@ -1,7 +1,7 @@
 import express from 'express';
-import { authController } from '../controllers/auth.controller.ts';
-import protectRoute from '../middleware/protectRoute.ts';
-import { asyncHandler } from '../middleware/asyncHandler.ts';
+import { authController } from '../controllers/auth.controller';
+import protectRoute from '../middleware/protectRoute';
+import { asyncHandler } from '../middleware/asyncHandler';
 
 const router = express.Router();
 
