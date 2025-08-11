@@ -1,19 +1,49 @@
-const GenderCheckbox = () => {
+import type { UseFormRegister, FieldValues } from 'react-hook-form';
+
+type GenderCheckboxProps<TFieldValues extends FieldValues> = {
+  register: UseFormRegister<TFieldValues>;
+  error?: string;
+};
+
+function GenderCheckbox<TFieldValues extends FieldValues>({
+  register,
+  error,
+}: GenderCheckboxProps<TFieldValues>) {
   return (
-    <div className="flex">
-      <div className="form-control">
-        <label className={`label gap-2 cursor-pointer`}>
-          <span className="label-text">Male</span>
-          <input type="checkbox" className="checkbox border-slate-900" />
-        </label>
-      </div>
-      <div className="form-control">
-        <label className={`label gap-2 cursor-pointer`}>
-          <span className="label-text">Female</span>
-          <input type="checkbox" className="checkbox border-slate-900" />
-        </label>
-      </div>
+    <div className="flex gap-4">
+      <label className="label cursor-pointer flex items-center gap-2">
+        <input
+          type="radio"
+          value="male"
+          {...register('gender' as any)}
+          className="radio border-slate-900"
+        />
+        <span className="label-text">Male</span>
+      </label>
+
+      <label className="label cursor-pointer flex items-center gap-2">
+        <input
+          type="radio"
+          value="female"
+          {...register('gender' as any)}
+          className="radio border-slate-900"
+        />
+        <span className="label-text">Female</span>
+      </label>
+
+      <label className="label cursor-pointer flex items-center gap-2">
+        <input
+          type="radio"
+          value="other"
+          {...register('gender' as any)}
+          className="radio border-slate-900"
+        />
+        <span className="label-text">Other</span>
+      </label>
+
+      {error && <p className="text-red-500 text-sm mt-1">{error}</p>}
     </div>
   );
-};
+}
+
 export default GenderCheckbox;
