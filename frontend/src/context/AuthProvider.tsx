@@ -1,35 +1,6 @@
-import {
-  createContext,
-  useContext,
-  useEffect,
-  useState,
-  type Dispatch,
-  type PropsWithChildren,
-  type SetStateAction,
-} from 'react';
+import { useEffect, useState, type PropsWithChildren } from 'react';
 import { authService } from '../services/auth.service';
-
-type AuthUser = {
-  id: string;
-  fullName: string;
-  email: string;
-  profilePic: string;
-  gender: string;
-};
-
-const AuthContext = createContext<{
-  authUser: AuthUser | null;
-  setAuthUser: Dispatch<SetStateAction<AuthUser | null>>;
-  isLoading: boolean;
-}>({
-  authUser: null,
-  setAuthUser: () => {},
-  isLoading: false,
-});
-
-export const useAuthContext = () => {
-  return useContext(AuthContext);
-};
+import { AuthContext, type AuthUser } from './auth.context';
 
 export const AuthContextProvider = ({ children }: PropsWithChildren) => {
   const [authUser, setAuthUser] = useState<AuthUser | null>(null);

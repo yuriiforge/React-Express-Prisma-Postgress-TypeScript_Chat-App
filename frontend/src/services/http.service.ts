@@ -43,8 +43,16 @@ export class HttpService {
       }
 
       return { status: res.status, data };
-    } catch (error: any) {
-      return { status: 0, error: error.message || 'Network error' };
+    } catch (error: unknown) {
+      let message = 'Network error';
+
+      if (error instanceof Error) {
+        message = error.message;
+      } else if (typeof error === 'string') {
+        message = error;
+      }
+
+      return { status: 0, error: message };
     }
   }
 
@@ -52,14 +60,14 @@ export class HttpService {
     return this.request<T>(url, { method: HttpMethod.GET });
   }
 
-  post<T>(url: string, body: any): Promise<HttpResponse<T>> {
+  post<T, B = unknown>(url: string, body: B): Promise<HttpResponse<T>> {
     return this.request<T>(url, {
       method: HttpMethod.POST,
       body: JSON.stringify(body),
     });
   }
 
-  put<T>(url: string, body: any): Promise<HttpResponse<T>> {
+  put<T, B = unknown>(url: string, body: B): Promise<HttpResponse<T>> {
     return this.request<T>(url, {
       method: HttpMethod.PUT,
       body: JSON.stringify(body),

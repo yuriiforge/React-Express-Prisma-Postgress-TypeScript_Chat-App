@@ -1,4 +1,4 @@
-import type { UseFormRegister, FieldValues } from 'react-hook-form';
+import type { UseFormRegister, FieldValues, Path } from 'react-hook-form';
 
 type GenderCheckboxProps<TFieldValues extends FieldValues> = {
   register: UseFormRegister<TFieldValues>;
@@ -15,7 +15,7 @@ function GenderCheckbox<TFieldValues extends FieldValues>({
         <input
           type="radio"
           value="male"
-          {...register('gender' as any)}
+          {...register('gender' as Path<TFieldValues>)}
           className="radio border-slate-900"
         />
         <span className="label-text">Male</span>
@@ -25,7 +25,7 @@ function GenderCheckbox<TFieldValues extends FieldValues>({
         <input
           type="radio"
           value="female"
-          {...register('gender' as any)}
+          {...register('gender' as Path<TFieldValues>)}
           className="radio border-slate-900"
         />
         <span className="label-text">Female</span>
@@ -35,7 +35,7 @@ function GenderCheckbox<TFieldValues extends FieldValues>({
         <input
           type="radio"
           value="other"
-          {...register('gender' as any)}
+          {...register('gender' as Path<TFieldValues>)}
           className="radio border-slate-900"
         />
         <span className="label-text">Other</span>

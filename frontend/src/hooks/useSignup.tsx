@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import { useAuthContext } from '../context/AuthContext';
 import type { SignupData } from '../schemas/auth.schema';
 import { authService } from '../services/auth.service';
+import { useAuthContext } from '../context/auth.context';
 
 type AuthUser = {
   id: string;
@@ -29,8 +29,16 @@ const useSignup = () => {
       }
 
       setAuthUser(response.data);
-    } catch (error: any) {
-      console.error(error.message);
+    } catch (error: unknown) {
+      let message = 'Network error';
+
+      if (error instanceof Error) {
+        message = error.message;
+      } else if (typeof error === 'string') {
+        message = error;
+      }
+
+      return { status: 0, error: message };
     } finally {
       setLoading(false);
     }
