@@ -10,6 +10,12 @@ class MessageService {
   async getMessages<T>(conversationId: string) {
     return this.http.get<T>(`/api/messages/${conversationId}`);
   }
+
+  async sendMessage<T>(conversationId: string, message: string) {
+    return this.http.post<T>(`/api/messages/send/${conversationId}`, {
+      message,
+    });
+  }
 }
 
 export const messageService = new MessageService(httpService);
