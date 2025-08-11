@@ -60,7 +60,7 @@ export class HttpService {
     return this.request<T>(url, { method: HttpMethod.GET });
   }
 
-  post<T, B = unknown>(url: string, body: B): Promise<HttpResponse<T>> {
+  post<T, B = unknown>(url: string, body?: B): Promise<HttpResponse<T>> {
     return this.request<T>(url, {
       method: HttpMethod.POST,
       body: JSON.stringify(body),

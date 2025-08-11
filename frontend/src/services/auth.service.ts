@@ -15,6 +15,10 @@ class AuthService {
   async signup<T>(data: SignupData): Promise<HttpResponse<T>> {
     return this.http.post<T>('/api/auth/signup', data);
   }
+
+  async logout() {
+    return this.http.post('/api/auth/logout');
+  }
 }
 
 export const authService = new AuthService(httpService);
