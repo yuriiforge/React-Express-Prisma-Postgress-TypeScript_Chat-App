@@ -25,7 +25,9 @@ export const AuthContextProvider = ({ children }: PropsWithChildren) => {
       } catch (error: unknown) {
         const message = getErrorMessage(error);
 
-        toast.error(message);
+        if (message === 'Not logged in') {
+          toast.error(message);
+        }
 
         return { status: 0, error: message };
       } finally {
