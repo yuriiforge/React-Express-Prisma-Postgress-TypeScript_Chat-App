@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import useConversation, { type Message } from '../zustand/useConversation';
 import { messageService } from '../services/message.service';
+import { getErrorMessage } from '../utils/getErrorMessage';
+import toast from 'react-hot-toast';
 
 const useSendMessage = () => {
   const [loading, setLoading] = useState(false);
@@ -23,6 +25,11 @@ const useSendMessage = () => {
 
       setMessages([...messages, res.data]);
     } catch (error: unknown) {
+      const message = getErrorMessage(error);
+
+      toast.error(message);
+
+      return { status: 0, error: message };
     } finally {
       setLoading(false);
     }

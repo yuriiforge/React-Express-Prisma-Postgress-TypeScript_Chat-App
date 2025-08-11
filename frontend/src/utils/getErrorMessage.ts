@@ -6,12 +6,12 @@ export function getErrorMessage(error: unknown): string {
     return error;
   }
   if (
-    error &&
+    error !== null &&
     typeof error === 'object' &&
     'message' in error &&
-    typeof (error as any).message === 'string'
+    typeof (error as { message?: unknown }).message === 'string'
   ) {
-    return (error as any).message;
+    return (error as { message?: string }).message!;
   }
   return 'Something went wrong';
 }
