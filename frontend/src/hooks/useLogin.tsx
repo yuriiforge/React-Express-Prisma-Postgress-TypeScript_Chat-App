@@ -15,12 +15,8 @@ const useLogin = () => {
 
       const res = await authService.login<AuthUser>(inputs);
 
-      if (res.error) {
-        throw new Error(res.error);
-      }
-
-      if (!res.data) {
-        throw new Error('No user data returned');
+      if (res.error || !res.data) {
+        throw new Error(res.error ?? 'No user data returned');
       }
 
       setAuthUser(res.data);

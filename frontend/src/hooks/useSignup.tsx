@@ -22,12 +22,8 @@ const useSignup = () => {
       setLoading(true);
       const response = await authService.signup<AuthUser>(inputs);
 
-      if (response.error) {
-        throw new Error(response.error);
-      }
-
-      if (!response.data) {
-        throw new Error('No user data returned');
+      if (response.error || !response.data) {
+        throw new Error(response.error ?? 'No user data returned');
       }
 
       setAuthUser(response.data);
