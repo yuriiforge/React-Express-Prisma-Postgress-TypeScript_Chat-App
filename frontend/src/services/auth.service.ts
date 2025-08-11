@@ -1,4 +1,4 @@
-import type { SignupData } from '../schemas/auth.schema';
+import type { LoginData, SignupData } from '../schemas/auth.schema';
 import {
   httpService,
   type HttpResponse,
@@ -10,6 +10,10 @@ class AuthService {
 
   async getMe<T>() {
     return this.http.get<T>('/api/auth/me');
+  }
+
+  async login<T>(data: LoginData): Promise<HttpResponse<T>> {
+    return this.http.post<T>('/api/auth/login', data);
   }
 
   async signup<T>(data: SignupData): Promise<HttpResponse<T>> {

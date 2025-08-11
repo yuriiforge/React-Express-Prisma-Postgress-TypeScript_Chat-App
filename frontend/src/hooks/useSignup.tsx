@@ -3,6 +3,7 @@ import type { SignupData } from '../schemas/auth.schema';
 import { authService } from '../services/auth.service';
 import { useAuthContext } from '../context/auth.context';
 import toast from 'react-hot-toast';
+import { getErrorMessage } from '../utils/getErrorMessage';
 
 type AuthUser = {
   id: string;
@@ -31,13 +32,7 @@ const useSignup = () => {
 
       setAuthUser(response.data);
     } catch (error: unknown) {
-      let message = 'Network error';
-
-      if (error instanceof Error) {
-        message = error.message;
-      } else if (typeof error === 'string') {
-        message = error;
-      }
+      const message = getErrorMessage(error);
 
       toast.error(message);
 
