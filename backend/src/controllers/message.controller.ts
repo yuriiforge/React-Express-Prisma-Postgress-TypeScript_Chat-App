@@ -78,6 +78,25 @@ class MessageController {
 
     res.status(200).json(conversation.messages);
   }
+
+  async getUsersForSidebar(req: Request, res: Response) {
+    const authUserId = req.user.id;
+
+    const users = await prisma.user.findMany({
+      where: {
+        id: {
+          not: authUserId,
+        },
+      },
+      select: {
+        id: true,
+        fullname: true,
+        profilePic: true,
+      },
+    });
+
+    res.status(200).json(users);
+  }
 }
 
 export const messageController = new MessageController();

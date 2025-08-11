@@ -5,11 +5,16 @@ import { asyncHandler } from '../middleware/asyncHandler';
 
 const router = express.Router();
 
+router.get(
+  '/conversations',
+  protectRoute,
+  asyncHandler(messageController.getUsersForSidebar)
+);
+router.get('/:id', protectRoute, asyncHandler(messageController.getMessages));
 router.post(
   '/send/:id',
   protectRoute,
   asyncHandler(messageController.sendMessage)
 );
-router.get('/:id', protectRoute, asyncHandler(messageController.getMessages));
 
 export default router;
