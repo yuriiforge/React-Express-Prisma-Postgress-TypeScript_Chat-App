@@ -3,12 +3,14 @@ import prisma from '../db/prisma';
 import { HashService, hashService } from '../services/hash.service';
 import generateToken from '../utils/generateToken';
 import { User } from '../../generated/prisma';
+import { loginSchema, signupSchema } from '../schemas/authSchemas';
 
 class AuthController {
   constructor(private readonly hashService: HashService) {}
 
   public signup = async (req: Request, res: Response) => {
-    const { fullName, username, password, confirmPassword, gender } = req.body;
+    const { fullName, username, password, confirmPassword, gender } =
+      signupSchema.parse(req.body);
 
     if (!fullName || !username || !password || !confirmPassword || !gender) {
       return res.status(400).json({ error: 'Please fill all the fields' });
@@ -44,7 +46,7 @@ class AuthController {
   };
 
   public login = async (req: Request, res: Response) => {
-    const { username, password } = req.body;
+    const { username, password } = loginSchema.parse(req.body);
 
     const user = await prisma.user.findUnique({ where: { username } });
 
