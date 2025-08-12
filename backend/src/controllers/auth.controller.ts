@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import prisma from '../db/prisma';
 import { HashService, hashService } from '../services/hash.service';
 import generateToken from '../utils/generateToken';
-import { User } from '../../generated/prisma';
+import { User } from '@prisma/client';
 import { loginSchema, signupSchema } from '../schemas/authSchemas';
 
 class AuthController {
