@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { Gender } from '../../generated/prisma';
+import { Gender } from '@prisma/client';
 
 export const loginSchema = z.object({
   username: z
