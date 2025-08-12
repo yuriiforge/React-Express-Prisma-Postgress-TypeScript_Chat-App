@@ -28,10 +28,6 @@ app.use(
 app.use('/api/auth', authRoutes);
 app.use('/api/messages', messageRoutes);
 
-app.get('/', (req: Request, res: Response) => {
-  res.send('Hello, world!');
-});
-
 // Serve frontend in production
 const __dirnamePath = path.resolve();
 if (process.env.NODE_ENV !== 'development') {
